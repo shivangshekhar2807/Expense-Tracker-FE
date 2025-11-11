@@ -42,7 +42,7 @@ const Navbar = () => {
         <>
           <div className="flex space-x-6">
             <Link
-              to="/dashboard"
+              to="/"
               className="text-gray-700 hover:text-green-600 transition"
             >
               Dashboard

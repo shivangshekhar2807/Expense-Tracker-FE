@@ -1,8 +1,9 @@
 import { Route, Routes } from "react-router-dom"
 import Body from "./components/body"
-import MyExpense from "./components/myExpense"
+
 import AuthPage from "./components/auth"
 import Error404 from "./Error404";
+import MyExpenseTracker from "./components/myExpense";
 
 
 function App() {
@@ -12,7 +13,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Body></Body>}>
-          <Route path="/" element={<MyExpense></MyExpense>}></Route>
+          <Route path="/" element={<MyExpenseTracker></MyExpenseTracker>}></Route>
           <Route path="/Auth" element={<AuthPage></AuthPage>}></Route>
         </Route>
         <Route path="*" element={<Error404></Error404>} />
