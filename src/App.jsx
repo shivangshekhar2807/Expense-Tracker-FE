@@ -6,6 +6,7 @@ import Error404 from "./Error404";
 import MyExpenseTracker from "./components/myExpense";
 import LeaderBoard from "./components/leaderBoard";
 import ExpenseReport from "./components/expenseReport";
+import AiChatInterface from "./components/AiChat";
 
 
 function App() {
@@ -15,9 +16,19 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Body></Body>}>
-          <Route path="/" element={<MyExpenseTracker></MyExpenseTracker>}></Route>
-          <Route path="/leaderboard" element={<LeaderBoard></LeaderBoard>}></Route>
-          <Route path="/report" element={<ExpenseReport></ExpenseReport>}></Route>
+          <Route
+            path="/"
+            element={<MyExpenseTracker></MyExpenseTracker>}
+          ></Route>
+          <Route
+            path="/leaderboard"
+            element={<LeaderBoard></LeaderBoard>}
+          ></Route>
+          <Route
+            path="/report"
+            element={<ExpenseReport></ExpenseReport>}
+          ></Route>
+          <Route path="/Expense/AI" element={<AiChatInterface></AiChatInterface>}></Route>
           <Route path="/Auth" element={<AuthPage></AuthPage>}></Route>
         </Route>
         <Route path="*" element={<Error404></Error404>} />

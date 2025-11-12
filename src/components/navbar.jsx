@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/constant";
 import { removeUser } from "../utils/userSlice";
 import { addRefresh } from "../utils/refresh";
@@ -10,6 +10,29 @@ const Navbar = () => {
     const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [active, setActive] = useState("Dashboard");
+
+    const location = useLocation();
+    const path = location.pathname;
+
+    
+    
+    useEffect(() => {
+        if (!path) {
+            return;
+        }
+        if (path == "/") {
+          setActive("Dashboard");
+        } else if (path == "/leaderboard") {
+          setActive("Leaderboard");
+        } else if (path == "/report") {
+          setActive("Report");
+        } else if (path == "/profile") {
+          setActive("Profile");
+        } else if (path == "/Expense/AI") {
+          setActive("AI");
+        }
+    },[path])
 
     
     const handleLogout = async () => {
@@ -43,31 +66,56 @@ const Navbar = () => {
           <div className="flex space-x-6">
             <Link
               to="/"
-              className="text-gray-700 hover:text-green-600 transition"
+              className={`font-semibold tracking-wide transition-all duration-300 underline-offset-4 ${
+                active === "Dashboard"
+                  ? "text-green-600 underline"
+                  : "text-gray-800 hover:text-green-600 hover:underline"
+              }`}
             >
               Dashboard
             </Link>
             <Link
-              to="/add-expense"
-              className="text-gray-700 hover:text-green-600 transition"
+              to="/profile"
+              className={`font-semibold tracking-wide transition-all duration-300 underline-offset-4 ${
+                active === "Profile"
+                  ? "text-green-600 underline"
+                  : "text-gray-800 hover:text-green-600 hover:underline"
+              }`}
             >
-              Add Expense
+              Profile
             </Link>
             <Link
               to="/leaderboard"
-              className="text-gray-700 hover:text-green-600 transition"
+              className={`font-semibold tracking-wide transition-all duration-300 underline-offset-4 ${
+                active === "Leaderboard"
+                  ? "text-green-600 underline"
+                  : "text-gray-800 hover:text-green-600 hover:underline"
+              }`}
             >
               LeaderBoard
             </Link>
             <Link
               to="/report"
-              className="text-gray-700 hover:text-green-600 transition"
+              className={`font-semibold tracking-wide transition-all duration-300 underline-offset-4 ${
+                active === "Report"
+                  ? "text-green-600 underline"
+                  : "text-gray-800 hover:text-green-600 hover:underline"
+              }`}
             >
-              report
+              Report
+            </Link>
+
+            <Link
+              to="/Expense/AI"
+              className={`font-semibold tracking-wide transition-all duration-300 underline-offset-4 ${
+                active === "AI"
+                  ? "text-green-600 underline"
+                  : "text-gray-800 hover:text-green-600 hover:underline"
+              }`}
+            >
+              AI
             </Link>
           </div>
-
-        
 
           {/* Logout + User Info (grouped together) */}
           <div className="flex items-center space-x-4">
