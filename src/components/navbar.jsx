@@ -54,10 +54,10 @@ const Navbar = () => {
               Add Expense
             </Link>
             <Link
-              to="/reports"
+              to="/leaderboard"
               className="text-gray-700 hover:text-green-600 transition"
             >
-              Reports
+              LeaderBoard
             </Link>
             <Link
               to="/profile"
