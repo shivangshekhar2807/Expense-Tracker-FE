@@ -1,3 +1,9 @@
+
+
+
+
+
+
 // import React, { useEffect, useState } from "react";
 // import { BASE_URL } from "../utils/constant";
 
@@ -12,8 +18,6 @@
 //         credentials: "include",
 //       });
 //       const data = await res.json();
-
-//       // ✅ no need to sort, using backend order
 //       setLeaders(data.result || []);
 //     } catch (err) {
 //       console.error("Error fetching leaderboard:", err);
@@ -32,6 +36,22 @@
 //         Loading Leaderboard...
 //       </div>
 //     );
+
+//   // background colors for top 3
+//   const getRowClass = (index) => {
+//     if (index === 0) return "bg-yellow-100"; // gold
+//     if (index === 1) return "bg-gray-200"; // silver
+//     if (index === 2) return "bg-amber-200"; // bronze
+//     return "bg-white";
+//   };
+
+//   // emoji medals for top 3
+//   const getMedal = (index) => {
+//     if (index === 0) return "🥇";
+//     if (index === 1) return "🥈";
+//     if (index === 2) return "🥉";
+//     return `#${index + 1}`;
+//   };
 
 //   return (
 //     <div className="flex flex-col items-center bg-gray-50 min-h-screen p-8">
@@ -57,6 +77,7 @@
 //               </th>
 //             </tr>
 //           </thead>
+
 //           <tbody>
 //             {leaders.length === 0 ? (
 //               <tr>
@@ -71,19 +92,14 @@
 //               leaders.map((user, index) => (
 //                 <tr
 //                   key={user.UserId}
-//                   className={`${
-//                     index === 0
-//                       ? "bg-yellow-50"
-//                       : index === 1
-//                       ? "bg-gray-100"
-//                       : index === 2
-//                       ? "bg-orange-50"
-//                       : "bg-white"
-//                   } border-b hover:bg-gray-50 transition`}
+//                   className={`${getRowClass(
+//                     index
+//                   )} border-b hover:bg-gray-50 transition`}
 //                 >
 //                   <td className="px-6 py-4 font-bold text-gray-700">
-//                     #{index + 1}
+//                     {getMedal(index)}
 //                   </td>
+
 //                   <td className="px-6 py-4 flex items-center space-x-3">
 //                     <img
 //                       src={
@@ -97,12 +113,14 @@
 //                       {user["User.name"]}
 //                     </span>
 //                   </td>
+
 //                   <td className="px-6 py-4 text-green-700 font-semibold">
 //                     ₹
 //                     {user.Total_Expense.toLocaleString(undefined, {
 //                       maximumFractionDigits: 2,
 //                     })}
 //                   </td>
+
 //                   <td className="px-6 py-4 text-gray-700">
 //                     {user.Number_of_Expense}
 //                   </td>
@@ -122,21 +140,37 @@
 
 
 
+
+
+
 import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../utils/constant";
 
 const LeaderBoard = () => {
   const [leaders, setLeaders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [pagination, setPagination] = useState({
+    nextPage: null,
+    previousPage: null,
+    currentPage: 1,
+  });
 
-  const fetchLeaderboard = async () => {
+  // Fetch leaderboard data
+  const fetchLeaderboard = async (url = `${BASE_URL}/Premium/Leaderboard`) => {
     try {
-      const res = await fetch(`${BASE_URL}/Premium/Leaderboard`, {
+      setLoading(true);
+      const res = await fetch(url, {
         method: "GET",
         credentials: "include",
       });
       const data = await res.json();
+
       setLeaders(data.result || []);
+      setPagination({
+        nextPage: data.nextPage,
+        previousPage: data.previousPage,
+        currentPage: data.currentPage || 1,
+      });
     } catch (err) {
       console.error("Error fetching leaderboard:", err);
     } finally {
@@ -148,28 +182,28 @@ const LeaderBoard = () => {
     fetchLeaderboard();
   }, []);
 
-  if (loading)
-    return (
-      <div className="flex justify-center items-center h-screen text-gray-600 text-lg">
-        Loading Leaderboard...
-      </div>
-    );
-
-  // background colors for top 3
+  // Background colors for top 3
   const getRowClass = (index) => {
-    if (index === 0) return "bg-yellow-100"; // gold
-    if (index === 1) return "bg-gray-200"; // silver
-    if (index === 2) return "bg-amber-200"; // bronze
+    if (index === 0) return "bg-yellow-100"; // Gold
+    if (index === 1) return "bg-gray-200"; // Silver
+    if (index === 2) return "bg-amber-200"; // Bronze
     return "bg-white";
   };
 
-  // emoji medals for top 3
+  // Emoji medals for top 3
   const getMedal = (index) => {
     if (index === 0) return "🥇";
     if (index === 1) return "🥈";
     if (index === 2) return "🥉";
     return `#${index + 1}`;
   };
+
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-screen text-gray-600 text-lg">
+        Loading Leaderboard...
+      </div>
+    );
 
   return (
     <div className="flex flex-col items-center bg-gray-50 min-h-screen p-8">
@@ -247,13 +281,45 @@ const LeaderBoard = () => {
             )}
           </tbody>
         </table>
+
+        {/* Pagination Controls */}
+        <div className="flex justify-between items-center px-6 py-4 bg-gray-50 border-t">
+          <button
+            onClick={() =>
+              pagination.previousPage &&
+              fetchLeaderboard(pagination.previousPage)
+            }
+            disabled={!pagination.previousPage}
+            className={`px-4 py-2 rounded-lg text-white font-medium ${
+              pagination.previousPage
+                ? "bg-green-600 hover:bg-green-700"
+                : "bg-gray-300 cursor-not-allowed"
+            }`}
+          >
+            Previous
+          </button>
+
+          <span className="text-gray-700 font-medium">
+            Page {pagination.currentPage}
+          </span>
+
+          <button
+            onClick={() =>
+              pagination.nextPage && fetchLeaderboard(pagination.nextPage)
+            }
+            disabled={!pagination.nextPage}
+            className={`px-4 py-2 rounded-lg text-white font-medium ${
+              pagination.nextPage
+                ? "bg-green-600 hover:bg-green-700"
+                : "bg-gray-300 cursor-not-allowed"
+            }`}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );
 };
 
 export default LeaderBoard;
-
-
-
-
