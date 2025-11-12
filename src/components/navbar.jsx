@@ -60,10 +60,10 @@ const Navbar = () => {
               LeaderBoard
             </Link>
             <Link
-              to="/profile"
+              to="/report"
               className="text-gray-700 hover:text-green-600 transition"
             >
-              Profile
+              report
             </Link>
           </div>
 
