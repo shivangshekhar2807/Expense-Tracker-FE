@@ -158,6 +158,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { BASE_URL } from "../utils/constant";
 import { useDispatch, useSelector } from "react-redux";
+import { addRefresh } from "../utils/refresh";
 
 const AiChatInterface = () => {
   const [chats, setChats] = useState([]); // Chat history
@@ -245,7 +246,7 @@ const AiChatInterface = () => {
       const aiResponse = data?.result || "No response received.";
       const createdAt = data?.createdAt || new Date().toISOString();
 
-      dispatch(Math.random())
+      
 
       // Update last chat with AI response
       setChats((prev) => {
@@ -254,6 +255,7 @@ const AiChatInterface = () => {
         updated[updated.length - 1].createdAt = createdAt;
         return updated;
       });
+      dispatch(addRefresh());
     } catch (err) {
       console.error("Error sending prompt:", err);
     } finally {
