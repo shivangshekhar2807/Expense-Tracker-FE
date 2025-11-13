@@ -157,13 +157,16 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { BASE_URL } from "../utils/constant";
+import { useSelector } from "react-redux";
 
 const AiChatInterface = () => {
   const [chats, setChats] = useState([]); // Chat history
   const [prompt, setPrompt] = useState("");
   const [loading, setLoading] = useState(false);
   const chatEndRef = useRef(null);
+  const [showPopup, setShowPopup] = useState(false);
 
+   const user = useSelector((state) => state.user);
 
 
   // Scroll to bottom whenever chats update
@@ -211,6 +214,12 @@ const AiChatInterface = () => {
     e.preventDefault();
     if (!prompt.trim()) return;
 
+    if (!user || user.Wallet_Balance <= 0) {
+      setShowPopup(true);
+      setTimeout(() => setShowPopup(false), 2500);
+      return;
+    }
+
     const newChat = {
       Prompt: prompt,
       Response: null,
@@ -251,7 +260,7 @@ const AiChatInterface = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-100">
+    <div className="flex flex-col h-screen bg-gray-100  relative">
       {/* Header */}
       <div className="bg-green-600 text-white text-center py-4 text-lg font-semibold shadow">
         💬 AI Expense Assistant
@@ -304,6 +313,12 @@ const AiChatInterface = () => {
 
         <div ref={chatEndRef}></div>
       </div>
+
+      {showPopup && (
+        <div className="absolute bottom-20 left-1/2 -translate-x-1/2 bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-2 rounded-lg shadow-md text-sm animate-fade-in-out">
+          You don’t have enough balance. Please recharge to ask questions 💰
+        </div>
+      )}
 
       {/* Input Box */}
       <form

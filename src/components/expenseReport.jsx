@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { BASE_URL } from "../utils/constant";
+import { useSelector } from "react-redux";
 
 const ExpenseReport = () => {
   const [reportType, setReportType] = useState("month"); // "date", "month", or "year"
@@ -8,6 +9,9 @@ const ExpenseReport = () => {
   const [yearInput, setYearInput] = useState("");
   const [reportData, setReportData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const user = useSelector((state) => state.user);
+  
+
 
   const fetchReport = async () => {
     try {
