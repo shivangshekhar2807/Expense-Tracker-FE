@@ -157,7 +157,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { BASE_URL } from "../utils/constant";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const AiChatInterface = () => {
   const [chats, setChats] = useState([]); // Chat history
@@ -166,7 +166,8 @@ const AiChatInterface = () => {
   const chatEndRef = useRef(null);
   const [showPopup, setShowPopup] = useState(false);
 
-   const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
 
   // Scroll to bottom whenever chats update
@@ -243,6 +244,8 @@ const AiChatInterface = () => {
       const data = await res.json();
       const aiResponse = data?.result || "No response received.";
       const createdAt = data?.createdAt || new Date().toISOString();
+
+      dispatch(Math.random())
 
       // Update last chat with AI response
       setChats((prev) => {

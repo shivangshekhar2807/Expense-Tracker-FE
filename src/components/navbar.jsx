@@ -8,7 +8,8 @@ import { Wallet, X, Crown } from "lucide-react";
 
 const Navbar = () => {
 
-    const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user);
+  const refresh=useSelector((state)=>state.refresh)
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [active, setActive] = useState("Dashboard");
@@ -83,7 +84,7 @@ const Navbar = () => {
 
   useEffect(() => {
     getProfile();
-  },[])
+  }, [refresh]);
   
   const handlePremium = async (amount) => {
     try {
