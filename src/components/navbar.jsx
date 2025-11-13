@@ -22,7 +22,7 @@ const Navbar = () => {
     const location = useLocation();
     const path = location.pathname;
 
-    
+    console.log(isPremium);
     
     useEffect(() => {
         if (!path) {
@@ -72,8 +72,8 @@ const Navbar = () => {
 
       const data = await res.json();
       
-      setWallet(data.data.Wallet_Balance);
-      setIsPremium(data.data.Premium);
+      setWallet(data.Data.Wallet_Balance);
+      setIsPremium(data.Data.Premium);
 
     }
     catch (err) {
