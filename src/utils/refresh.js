@@ -4,8 +4,8 @@ const refreshSlice = createSlice({
   name: "refresh",
   initialState: null,
   reducers: {
-    addRefresh(state, action) {
-      return action.payload;
+    addRefresh() {
+      return Math.random();
     },
   },
 });

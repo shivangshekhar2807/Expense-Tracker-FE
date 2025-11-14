@@ -159,6 +159,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { BASE_URL } from "../utils/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { addRefresh } from "../utils/refresh";
+import { addUser } from "../utils/userSlice";
 
 const AiChatInterface = () => {
   const [chats, setChats] = useState([]); // Chat history
@@ -216,11 +217,26 @@ const AiChatInterface = () => {
     e.preventDefault();
     if (!prompt.trim()) return;
 
-    if (!user || user.Wallet_Balance <= 0) {
+    // if (!user || user.Wallet_Balance <= 0) {
+    //   setShowPopup(true);
+    //   setTimeout(() => setShowPopup(false), 2500);
+    //   return;
+    // }
+
+    // Always fetch updated profile first
+    const profileRes = await fetch(`${BASE_URL}/Profile`, {
+      credentials: "include",
+    });
+    const profileData = await profileRes.json();
+
+    if (profileData.Data.Wallet_Balance <= 0) {
       setShowPopup(true);
       setTimeout(() => setShowPopup(false), 2500);
       return;
     }
+
+    // Use dispatch so Redux stays in sync
+    dispatch(addUser(profileData.Data));
 
     const newChat = {
       Prompt: prompt,
@@ -245,8 +261,6 @@ const AiChatInterface = () => {
       const data = await res.json();
       const aiResponse = data?.result || "No response received.";
       const createdAt = data?.createdAt || new Date().toISOString();
-
-      
 
       // Update last chat with AI response
       setChats((prev) => {

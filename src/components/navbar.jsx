@@ -13,15 +13,20 @@ const Navbar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [active, setActive] = useState("Dashboard");
-    const [wallet, setWallet] = useState(0);
-  const [isPremium, setIsPremium] = useState(false)
+  //   const [wallet, setWallet] = useState(0);
+  // const [isPremium, setIsPremium] = useState(false)
   const [showModal, setShowModal] = useState(false);
   const [rechargeAmount, setRechargeAmount] = useState("");
     const [showPopup, setShowPopup] = useState(false);
 
 
-    const location = useLocation();
-    const path = location.pathname;
+  const location = useLocation();
+
+  const path = location.pathname;
+  
+  const wallet = user?.Wallet_Balance || 0;
+  const isPremium = user?.Premium || false;
+
 
     console.log(isPremium);
     
@@ -61,30 +66,30 @@ const Navbar = () => {
         }
     }
   
-  const getProfile = async ()=>{
-    try {
-      const res = await fetch(`${BASE_URL}/Profile`, {
-        credentials:"include"
-      })
+  // const getProfile = async ()=>{
+  //   try {
+  //     const res = await fetch(`${BASE_URL}/Profile`, {
+  //       credentials:"include"
+  //     })
 
-      if (!res.ok) {
-        throw new Error("Profile not feched")
-      }
+  //     if (!res.ok) {
+  //       throw new Error("Profile not feched")
+  //     }
 
-      const data = await res.json();
+  //     const data = await res.json();
       
-      setWallet(data.Data.Wallet_Balance);
-      setIsPremium(data.Data.Premium);
+  //     setWallet(data.Data.Wallet_Balance);
+  //     setIsPremium(data.Data.Premium);
 
-    }
-    catch (err) {
-      console.log(err)
-     }
-  }
+  //   }
+  //   catch (err) {
+  //     console.log(err)
+  //    }
+  // }
 
-  useEffect(() => {
-    getProfile();
-  }, [refresh]);
+  // useEffect(() => {
+  //   getProfile();
+  // }, [refresh]);
   
   const handlePremium = async (amount) => {
     try {
@@ -120,7 +125,9 @@ const Navbar = () => {
         theme: {
           color: "#F37254",
         },
-        handler: getProfile,
+        handler: () => {
+          dispatch(addRefresh());
+        },
       };
 
       const rzp = new window.Razorpay(options);
@@ -166,7 +173,9 @@ const Navbar = () => {
          theme: {
            color: "#F37254",
          },
-         handler: getProfile,
+         handler: () => {
+           dispatch(addRefresh());
+         },
        };
 
        const rzp = new window.Razorpay(options);
