@@ -44,6 +44,8 @@ const Navbar = () => {
           setActive("Profile");
         } else if (path == "/Expense/AI") {
           setActive("AI");
+        } else if (path == "/chat") {
+          setActive("Chat");
         }
     },[path])
 
@@ -228,16 +230,6 @@ const Navbar = () => {
               >
                 Profile
               </Link>
-              {/* <Link
-                to="/leaderboard"
-                className={`font-semibold tracking-wide transition-all duration-300 underline-offset-4 ${
-                  active === "Leaderboard"
-                    ? "text-green-600 underline"
-                    : "text-gray-800 hover:text-green-600 hover:underline"
-                }`}
-              >
-                LeaderBoard
-              </Link> */}
 
               {/* Leaderboard with Crown Icon */}
               <div className="relative">
@@ -275,6 +267,16 @@ const Navbar = () => {
                 }`}
               >
                 Report
+              </Link>
+              <Link
+                to="/chat"
+                className={`font-semibold tracking-wide transition-all duration-300 underline-offset-4 ${
+                  active === "Chat"
+                    ? "text-green-600 underline"
+                    : "text-gray-800 hover:text-green-600 hover:underline"
+                }`}
+              >
+                Chat
               </Link>
 
               <Link
@@ -375,8 +377,6 @@ const Navbar = () => {
           </div>
         </div>
       )}
-
-
     </>
   );
 };
