@@ -9,8 +9,8 @@ const AuthPage = () => {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
   const [loginData, setLoginData] = useState({
-    email: "Shivang@gmail.com",
-    password: "Ss@621311",
+    email: "",
+    password: "",
   });
   const [signupData, setSignupData] = useState({
     name: "",

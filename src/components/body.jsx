@@ -16,10 +16,10 @@ const Body = () => {
           try {
             const res = await fetch(`${BASE_URL}/Profile`, {
               method: "GET",
-              credentials: "include", // ✅ send cookies (important)
+              credentials: "include", 
             });
 
-            // ✅ Handle non-OK responses
+           
             if (!res.ok) {
               if (res.status === 401) {
                 console.log("401 detected");
@@ -29,12 +29,12 @@ const Body = () => {
               throw new Error(`Fetch Profile Failed (${res.status})`);
             }
 
-            // ✅ Parse JSON response safely
+           
             const data = await res.json();
 
             console.log("res......", data);
 
-            // ✅ Dispatch to Redux
+            
             dispatch(addUser(data.Data));
           } catch (err) {
             console.error("errrrrrr", err);
